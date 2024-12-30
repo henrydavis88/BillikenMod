@@ -2,8 +2,11 @@ package net.Carpet.BillikenMod;
 
 import com.mojang.logging.LogUtils;
 import net.Carpet.BillikenMod.blocks.ModBlocks;
+import net.Carpet.BillikenMod.enchantment.ModEnchantmentEffects;
 import net.Carpet.BillikenMod.entity.ModEntities;
+import net.Carpet.BillikenMod.entity.client.BillikenRenderer;
 import net.Carpet.BillikenMod.item.ModItems;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.api.distmarker.Dist;
@@ -42,6 +45,7 @@ public class BillikenMod {
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModEntities.register(modEventBus);
+        ModEnchantmentEffects.register(modEventBus);
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
@@ -79,7 +83,7 @@ public class BillikenMod {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-
+            EntityRenderers.register(ModEntities.BILLIKEN.get(), BillikenRenderer::new);
         }
     }
 }
