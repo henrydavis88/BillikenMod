@@ -1,7 +1,10 @@
 package net.Carpet.BillikenMod.blocks.custom;
 
+import net.Carpet.BillikenMod.Config;
 import net.Carpet.BillikenMod.blocks.ModBlocks;
 
+import net.Carpet.BillikenMod.entity.ModEntities;
+import net.Carpet.BillikenMod.entity.custom.BillikenEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -39,17 +42,20 @@ public class BillikenBlock extends Block {
     }
 
     private void spawnBilliken(Level pLevel, BlockPos pPos) {
-        Cow cow = EntityType.COW.create(pLevel, EntitySpawnReason.TRIGGERED);
-        if (cow != null) {
-            cow.moveTo((double)pPos.getX(), (double)pPos.getY() + 1, (double)pPos.getZ(), 0.0F, 0.0F);
-            pLevel.addFreshEntity(cow);
-            cow.spawnAnim();
+        BillikenEntity billiken = ModEntities.BILLIKEN.get().create(pLevel, EntitySpawnReason.TRIGGERED);
+
+        if (billiken != null) {
+            billiken.moveTo((double)pPos.getX(), (double)pPos.getY() + 1, (double)pPos.getZ(), 0.0F, 0.0F);
+            pLevel.addFreshEntity(billiken);
+            billiken.spawnAnim();
         }
     }
 
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-        player.setHealth(0);
+        if (Config.BILLIKEN_BLOCK_BREAK_KILLS.get()) {
+            player.setHealth(0);
+        }
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 }

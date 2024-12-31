@@ -1,6 +1,7 @@
 package net.Carpet.BillikenMod.entity.custom;
 
 import net.Carpet.BillikenMod.BillikenMod;
+import net.Carpet.BillikenMod.Config;
 import net.Carpet.BillikenMod.blocks.ModBlocks;
 import net.Carpet.BillikenMod.enchantment.ModEnchantmentEffects;
 import net.Carpet.BillikenMod.enchantment.ModEnchantments;
@@ -61,7 +62,7 @@ public class BillikenEntity extends Animal {
 
 
     }
-
+    /*
     public List<BillikenCrafting> recipes() {
         List<BillikenCrafting> recipes = new ArrayList<>();
         recipes.add(new BillikenCrafting(Items.GOLDEN_APPLE, Items.ENCHANTED_GOLDEN_APPLE, 1, 10));
@@ -85,7 +86,7 @@ public class BillikenEntity extends Animal {
     }
 
     public List<BillikenCrafting> recipesFinal = recipes();
-
+    */
 
     @Override
     protected void registerGoals() {
@@ -140,10 +141,26 @@ public class BillikenEntity extends Animal {
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        List<BillikenCrafting> recipesFinal = Config.recipes;
         ItemStack pStack = player.getItemInHand(hand);
+
+        if (pStack.is(ModBlocks.TUITION_BLOCK.get().asItem())) {
+            pStack.consume(1, player);
+            billikenInteractionCooldown = 0;
+            return InteractionResult.SUCCESS;
+        } else if (pStack.is(ModItems.TUITION.get())) {
+            billikenInteractionCooldown -= 30;
+            if (billikenInteractionCooldown <= 0) {
+                billikenInteractionCooldown = 0;
+                pStack.consume(1, player);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
         if (billikenInteractionCooldown > 0) {
             return super.mobInteract(player, hand);
         }
+
         for (int i = 0; i < recipesFinal.size(); i++) {
             if (pStack.is(recipesFinal.get(i).startingItem) && player.experienceLevel >= recipesFinal.get(i).levelsRequired) {
                 pStack.consume(1, player);
