@@ -1,0 +1,16 @@
+{
+  "recipes": [
+    {
+      "starting_item": "minecraft:golden_apple",
+      "ending_item": "minecraft:enchanted_golden_apple",
+      "amount": 1,
+      "levels": 10
+    },
+    {
+      "starting_item": "minecraft:diamond_ore",
+      "ending_item": "minecraft:diamond_block",
+      "amount": 1,
+      "levels": 10
+    }
+  ]
+}

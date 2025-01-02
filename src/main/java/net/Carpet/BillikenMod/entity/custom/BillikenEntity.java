@@ -39,6 +39,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +61,9 @@ public class BillikenEntity extends Animal {
         super(pEntityType, pLevel);
 
 
-
     }
+
+
     /*
     public List<BillikenCrafting> recipes() {
         List<BillikenCrafting> recipes = new ArrayList<>();
@@ -141,7 +143,7 @@ public class BillikenEntity extends Animal {
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        List<BillikenCrafting> recipesFinal = Config.recipes;
+        List<BillikenCrafting> recipesFinal = BillikenCraftsAssembler.recipes;
         ItemStack pStack = player.getItemInHand(hand);
 
         if (pStack.is(ModBlocks.TUITION_BLOCK.get().asItem())) {
@@ -162,6 +164,7 @@ public class BillikenEntity extends Animal {
         }
 
         for (int i = 0; i < recipesFinal.size(); i++) {
+
             if (pStack.is(recipesFinal.get(i).startingItem) && player.experienceLevel >= recipesFinal.get(i).levelsRequired) {
                 pStack.consume(1, player);
                 for (int j = 1; j <= recipesFinal.get(i).itemCount; j++) {
