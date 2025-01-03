@@ -1,5 +1,6 @@
 package net.Carpet.BillikenMod.entity.custom;
 
+import com.mojang.logging.LogUtils;
 import net.Carpet.BillikenMod.BillikenMod;
 import net.Carpet.BillikenMod.Config;
 import net.Carpet.BillikenMod.blocks.ModBlocks;
@@ -22,6 +23,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -38,6 +40,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -53,6 +56,8 @@ public class BillikenEntity extends Animal {
     public final AnimationState idleAnimationState = new AnimationState();
 
     private int idleAnimationTimeout = 0;
+
+    private static Logger LOGGER = LogUtils.getLogger();
 
 
     private int billikenInteractionCooldown = 0;
@@ -142,16 +147,20 @@ public class BillikenEntity extends Animal {
 
     }
 
+
+
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        List<BillikenCrafting> recipesFinal = BillikenCraftsAssembler.recipes;
+
+        List<BillikenCrafting> recipesFinal = BillikenCraftsAssembler.jsonReaderTwo();
         ItemStack pStack = player.getItemInHand(hand);
+
 
         if (pStack.is(ModBlocks.TUITION_BLOCK.get().asItem())) {
             pStack.consume(1, player);
-            billikenInteractionCooldown = 0;
+            billikenInteractionCooldown -= Config.tuitionBlockReset * 20;
             return InteractionResult.SUCCESS;
         } else if (pStack.is(ModItems.TUITION.get())) {
-            billikenInteractionCooldown -= 30;
+            billikenInteractionCooldown -= Config.tuitionTradeReset * 20;
             if (billikenInteractionCooldown <= 0) {
                 billikenInteractionCooldown = 0;
                 pStack.consume(1, player);
@@ -171,7 +180,7 @@ public class BillikenEntity extends Animal {
                     player.addItem(recipesFinal.get(i).endResult.getDefaultInstance());
                 }
                 player.experienceLevel -= recipesFinal.get(i).levelsRequired;
-                billikenInteractionCooldown = 6000;
+                billikenInteractionCooldown = Config.billikenTradeReset * 20;
                 return InteractionResult.SUCCESS;
             }
         }
@@ -183,17 +192,17 @@ public class BillikenEntity extends Animal {
                 if (currentItemLevel == 0 && player.experienceLevel >= 15) {
                     pStack.enchant(BILLIKEN_BOUNTY.getOrThrow(player), 1);
                     player.experienceLevel -= 15;
-                    billikenInteractionCooldown = 6000;
+                    billikenInteractionCooldown =  Config.billikenTradeReset * 20;
                     return InteractionResult.SUCCESS;
                 } else if (currentItemLevel == 1 && player.experienceLevel >= 20) {
                     pStack.enchant(BILLIKEN_BOUNTY.getOrThrow(player), 2);
                     player.experienceLevel -= 20;
-                    billikenInteractionCooldown = 6000;
+                    billikenInteractionCooldown =  Config.billikenTradeReset * 20;
                     return InteractionResult.SUCCESS;
                 } else if (currentItemLevel == 2 && player.experienceLevel >= 30) {
                     pStack.enchant(BILLIKEN_BOUNTY.getOrThrow(player), 3);
                     player.experienceLevel -= 30;
-                    billikenInteractionCooldown = 6000;
+                    billikenInteractionCooldown =  Config.billikenTradeReset * 20;
                     return InteractionResult.SUCCESS;
                 }
         }

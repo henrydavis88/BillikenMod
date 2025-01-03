@@ -24,34 +24,26 @@ public class Config {
             .comment("Set true to punish those that dare break the Billiken Block")
             .define("punish",true);
 
-    private static final ForgeConfigSpec.ConfigValue<List<? extends String>> BILLIKEN_CRAFTS_INPUT = BUILDER
-            .comment("Add input for recipes for the Billiken Crafting.")
-            .defineListAllowEmpty("input:", List.of("minecraft:golden_apple",
-                    "minecraft:apple"), Config::validateItemName);
+    public static final ForgeConfigSpec.ConfigValue<Integer> BILLIKEN_TRADE_RESET = BUILDER
+            .comment("How long should the cooldown of the Billiken Trading be?")
+            .define("length in seconds: ", 300);
 
-    private static final ForgeConfigSpec.ConfigValue<List<? extends String>> BILLIKEN_CRAFTS_OUTPUT = BUILDER
-            .comment("Add output of recipes for the Billiken Crafting.")
-            .defineListAllowEmpty("output:", List.of("minecraft:enchanted_golden_apple",
-                    "minecraft:golden_apple"), Config::validateItemName);
+    public static final ForgeConfigSpec.ConfigValue<Integer> BLOCK_TUITION_RESET_AMOUNT = BUILDER
+            .comment("How much should the Tuition Block reset the trading cooldown")
+            .define("length in seconds: ", 300);
 
-    private static final ForgeConfigSpec.ConfigValue<List<? extends Integer>> BILLIKEN_CRAFTS_NUMBER = BUILDER
-            .comment("Add number of items output for recipes for the Billiken Crafting.")
-            .define("number", List.of(1,
-            1));
-
-    private static final ForgeConfigSpec.ConfigValue<List<? extends Integer>> BILLIKEN_CRAFTS_LEVELS = BUILDER
-            .comment("Add level cost for recipes for the Billiken Crafting.")
-            .define("levels", List.of(10,
-                    5));
+    public static final ForgeConfigSpec.ConfigValue<Integer> TUITION_RESET_AMOUNT = BUILDER
+            .comment("How much should the Tuition Item reset the trading cooldown")
+            .define("length in seconds: ", 30);
 
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
 
-    public static List<Item> billikenInput;
-    public static List<Item> billikenOutput;
-    public static List<Integer> billikenNumber;
-    public static List<Integer> billikenLevels;
+    public static Boolean billikenKills;
+    public static Integer billikenTradeReset;
+    public static Integer tuitionTradeReset;
+    public static Integer tuitionBlockReset;
 
 
     public static List<BillikenCrafting> recipes = new ArrayList<>() {
@@ -67,20 +59,10 @@ public class Config {
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event) {
 
-        billikenInput = BILLIKEN_CRAFTS_INPUT.get().stream()
-                .map(itemName -> ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(itemName)))
-                .collect(Collectors.toList());
-        billikenOutput = BILLIKEN_CRAFTS_OUTPUT.get().stream()
-                .map(itemName -> ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(itemName)))
-                .collect(Collectors.toList());
-        billikenNumber = BILLIKEN_CRAFTS_NUMBER.get().stream().collect(Collectors.toList());
-        billikenLevels = BILLIKEN_CRAFTS_LEVELS.get().stream().collect(Collectors.toList());
-
-        if (billikenInput.size() == billikenOutput.size() && billikenLevels.size() == billikenNumber.size() && billikenInput.size() == billikenNumber.size()) {
-            for (int i = 0; i < billikenInput.size(); i++) {
-                recipes.add(new BillikenCrafting(billikenInput.get(i), billikenOutput.get(i), billikenNumber.get(i), billikenLevels.get(i)));
-            }
-        }
+        billikenKills = BILLIKEN_BLOCK_BREAK_KILLS.get();
+        billikenTradeReset = BILLIKEN_TRADE_RESET.get();
+        tuitionBlockReset = BLOCK_TUITION_RESET_AMOUNT.get();
+        tuitionTradeReset = TUITION_RESET_AMOUNT.get();
 
     }
 }
