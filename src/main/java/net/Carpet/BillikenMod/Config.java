@@ -35,6 +35,15 @@ public class Config {
     public static final ForgeConfigSpec.ConfigValue<Integer> TUITION_RESET_AMOUNT = BUILDER
             .comment("How much should the Tuition Item reset the trading cooldown")
             .define("length in seconds: ", 30);
+    public static final ForgeConfigSpec.ConfigValue<Integer> LEVELS_FOR_FIRST = BUILDER
+            .comment("How many levels should the first round of enchantment cost: ")
+            .define("Levels: ", 15);
+    public static final ForgeConfigSpec.ConfigValue<Integer> LEVELS_FOR_SECOND = BUILDER
+            .comment("How many levels should the second round of enchantment cost: ")
+            .define("Levels: ", 20);
+    public static final ForgeConfigSpec.ConfigValue<Integer> LEVELS_FOR_THIRD = BUILDER
+            .comment("How many levels should the third round of enchantment cost: ")
+            .define("Levels: ", 30);
 
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
@@ -44,6 +53,9 @@ public class Config {
     public static Integer billikenTradeReset;
     public static Integer tuitionTradeReset;
     public static Integer tuitionBlockReset;
+    public static Integer firstLevel;
+    public static Integer secondLevel;
+    public static Integer thirdLevel;
 
 
     public static List<BillikenCrafting> recipes = new ArrayList<>() {
@@ -63,6 +75,9 @@ public class Config {
         billikenTradeReset = BILLIKEN_TRADE_RESET.get();
         tuitionBlockReset = BLOCK_TUITION_RESET_AMOUNT.get();
         tuitionTradeReset = TUITION_RESET_AMOUNT.get();
+        firstLevel = LEVELS_FOR_FIRST.get();
+        secondLevel = LEVELS_FOR_SECOND.get();
+        thirdLevel = LEVELS_FOR_THIRD.get();
 
     }
 }

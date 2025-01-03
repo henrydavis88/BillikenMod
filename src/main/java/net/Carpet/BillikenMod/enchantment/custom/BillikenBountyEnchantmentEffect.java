@@ -26,6 +26,7 @@ public class BillikenBountyEnchantmentEffect implements EnchantmentLocationBased
             if (entity instanceof Player) {
                 Player player = (Player) entity;
                 Double activateEffect = Math.random();
+                player.addEffect(new MobEffectInstance(MobEffects.LUCK, 240, 0, true, true));
                 if (activateEffect <= 0.02 * i) {
                     Double chooseEffect = Math.random();
                     if (chooseEffect <= 0.2) {

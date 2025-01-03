@@ -189,19 +189,19 @@ public class BillikenEntity extends Animal {
 
                 ForgeRegistries.ITEMS.getHolder(ResourceLocation.parse("billikenmod:billiken_block"));
 
-                if (currentItemLevel == 0 && player.experienceLevel >= 15) {
+                if (currentItemLevel == 0 && player.experienceLevel >= Config.firstLevel) {
                     pStack.enchant(BILLIKEN_BOUNTY.getOrThrow(player), 1);
-                    player.experienceLevel -= 15;
+                    player.experienceLevel -= Config.firstLevel;
                     billikenInteractionCooldown =  Config.billikenTradeReset * 20;
                     return InteractionResult.SUCCESS;
-                } else if (currentItemLevel == 1 && player.experienceLevel >= 20) {
+                } else if (currentItemLevel == 1 && player.experienceLevel >= Config.secondLevel) {
                     pStack.enchant(BILLIKEN_BOUNTY.getOrThrow(player), 2);
-                    player.experienceLevel -= 20;
+                    player.experienceLevel -= Config.secondLevel;
                     billikenInteractionCooldown =  Config.billikenTradeReset * 20;
                     return InteractionResult.SUCCESS;
-                } else if (currentItemLevel == 2 && player.experienceLevel >= 30) {
+                } else if (currentItemLevel == 2 && player.experienceLevel >= Config.thirdLevel) {
                     pStack.enchant(BILLIKEN_BOUNTY.getOrThrow(player), 3);
-                    player.experienceLevel -= 30;
+                    player.experienceLevel -= Config.thirdLevel;
                     billikenInteractionCooldown =  Config.billikenTradeReset * 20;
                     return InteractionResult.SUCCESS;
                 }
